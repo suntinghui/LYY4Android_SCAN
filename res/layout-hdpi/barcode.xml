@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/barcode"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/topbarLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/nav_bar_bg"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/white_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/scaner" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_money"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/scan_background"
+        android:inputType="number"
+        android:ems="10"
+        android:hint="请输入交易金额"
+        android:textSize="20sp" >
+    </EditText>
+
+    <Button
+        android:id="@+id/btn_scan"
+        style="@style/white_20"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="45dip"
+        android:layout_marginRight="45dip"
+        android:layout_marginTop="200dip"
+        android:background="@drawable/btn"
+        android:text="@string/scan" />
+
+</LinearLayout>
