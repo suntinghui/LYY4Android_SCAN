@@ -15,5 +15,6 @@
     <string name="scan">扫描</string>
     <string name="scansuccess">消费成功</string>
     <string name="scanover">扫描结果</string>
+    <string name="over">完成</string>
 
 </resources>
