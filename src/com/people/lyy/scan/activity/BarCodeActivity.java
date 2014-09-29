@@ -51,7 +51,6 @@ public class BarCodeActivity extends Activity {
 					mTask.onCancelled();
 				mTask = new MyTask();
 				startActivity(openCameraIntent);
-				BarCodeActivity.this.finish();
 			}
 		});
 	}

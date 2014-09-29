@@ -53,7 +53,7 @@ public class SplashActivity extends BaseActivity {
 		protected void onPostExecute(Object result) {
 
 			Intent intent0 = new Intent(SplashActivity.this,
-				LoginActivity.class);
+				BarCodeActivity.class);
 			SplashActivity.this.startActivity(intent0);
 			SplashActivity.this.finish();
 		}
