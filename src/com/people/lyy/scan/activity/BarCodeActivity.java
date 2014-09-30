@@ -43,14 +43,15 @@ public class BarCodeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				//Constants.COST = et_money.getText().toString().trim(); 
-				// ��ɨ�����ɨ����������ά��
-				Intent openCameraIntent = new Intent(BarCodeActivity.this,
-						CaptureActivity.class);
-				if (mTask != null)
-					mTask.onCancelled();
-				mTask = new MyTask();
-				startActivity(openCameraIntent);
+				// Constants.COST = et_money.getText().toString().trim();
+//				Intent openCameraIntent = new Intent(BarCodeActivity.this, CaptureActivity.class);
+//				if (mTask != null)
+//					mTask.onCancelled();
+//				mTask = new MyTask();
+//				startActivity(openCameraIntent);
+				
+				Intent service = new Intent("com.people.sotp.lyyservice");
+				startService(service);
 			}
 		});
 	}

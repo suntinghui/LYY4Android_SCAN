@@ -29,16 +29,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.people.lyy.scan.activity.LoginActivity" >
-        </activity>
-        <activity android:name="com.people.lyy.scan.activity.BarCodeActivity" >
-        </activity>
-        <activity android:name="com.people.lyy.scan.activity.CaptureActivity" >
-        </activity>
-        <activity android:name="com.people.lyy.scan.activity.PhotoUploadActivity" >
-        </activity>
-                <activity android:name="com.people.lyy.scan.activity.SuccessActivity" >
-        </activity>
+        <activity android:name="com.people.lyy.scan.activity.LoginActivity" />
+        <activity android:name="com.people.lyy.scan.activity.BarCodeActivity" />
+        <activity android:name="com.people.lyy.scan.activity.CaptureActivity" />
+        <activity android:name="com.people.lyy.scan.activity.PhotoUploadActivity" />
+        <activity android:name="com.people.lyy.scan.activity.SuccessActivity" />
+
     </application>
 
 </manifest>
