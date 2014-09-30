@@ -153,10 +153,10 @@ public class CaptureActivity extends Activity implements Callback {
 			}
 			//这是在把二维码扫到的值传递 不过被我改了
 			Intent resultIntent = new Intent(CaptureActivity.this,SuccessActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("result", resultString);
+			resultIntent.putExtras(bundle);
 			startActivity(resultIntent);
-//			Bundle bundle = new Bundle();
-//			bundle.putString("result", resultString);
-//			resultIntent.putExtras(bundle);
 //			this.setResult(RESULT_OK, resultIntent);
 		}
 		CaptureActivity.this.finish();

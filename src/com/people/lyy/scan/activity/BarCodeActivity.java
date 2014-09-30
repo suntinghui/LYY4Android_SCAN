@@ -65,19 +65,20 @@ public class BarCodeActivity extends Activity {
 	// }
 	// });
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		// ����ɨ�����ڽ�������ʾ��
-		String scanResult = null;
-		if (resultCode == RESULT_OK) {
-			Bundle bundle = data.getExtras();
-			scanResult = bundle.getString("result");
-			// scanResult就是扫描二维码返回来的东西
-			// resultTextView.setText(scanResult);
-			mTask.execute(scanResult);
-		}
-	}
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);
+//		// ����ɨ�����ڽ�������ʾ��
+//		String scanResult = null;
+//		if (resultCode == RESULT_OK) {
+//			Bundle bundle = data.getExtras();
+//			scanResult = bundle.getString("result");
+//			
+//			// scanResult就是扫描二维码返回来的东西
+//			// resultTextView.setText(scanResult);
+//			mTask.execute(scanResult);
+//		}
+//	}
 
 	private class MyTask extends AsyncTask<String, Integer, Bitmap> {
 		String TAG = "AsyncTask";
