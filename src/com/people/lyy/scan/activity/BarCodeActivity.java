@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-public class BarCodeActivity extends Activity {
+public class BarCodeActivity extends BaseActivity {
 	private View btn_scan;
 	String imageUrl = "http://hiphotos.baidu.com/baidu/pic/item/7d8aebfebf3f9e125c6008d8.jpg";
 	// ImageView imView;

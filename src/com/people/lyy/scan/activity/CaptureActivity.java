@@ -44,7 +44,7 @@ import com.people.network.LKHttpRequestQueueDone;
  * 
  * @author Ryan.Tang
  */
-public class CaptureActivity extends Activity implements Callback {
+public class CaptureActivity extends BaseActivity implements Callback {
 
 	private CaptureActivityHandler handler;
 	private ViewfinderView viewfinderView;
@@ -126,7 +126,7 @@ public class CaptureActivity extends Activity implements Callback {
 	}
 
 	@Override
-	protected void onPause() {
+	protected void onPause() { 
 		super.onPause();
 		if (handler != null) {
 			handler.quitSynchronously();
@@ -162,15 +162,7 @@ public class CaptureActivity extends Activity implements Callback {
 			// 把二维码信息上传服务器
 			upLoading();
 
-			// 这是在把二维码扫到的值传递 不过被我改了
-			Intent resultIntent = new Intent(CaptureActivity.this, SuccessActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("result", resultString);
-			resultIntent.putExtras(bundle);
-			startActivity(resultIntent);
-			// this.setResult(RESULT_OK, resultIntent);
 		}
-		CaptureActivity.this.finish();
 	}
 
 	private void initCamera(SurfaceHolder surfaceHolder) {
@@ -267,9 +259,9 @@ public class CaptureActivity extends Activity implements Callback {
 		tempMap.put("token", resultString);
 		tempMap.put("money", this.getIntent().getStringExtra("money"));
 
-		LKHttpRequest req1 = new LKHttpRequest(TransferRequestTag.Accounts, tempMap, upLoadingHandler());
+		LKHttpRequest req1 = new LKHttpRequest(TransferRequestTag.Consumer, tempMap, upLoadingHandler());
 
-		new LKHttpRequestQueue().addHttpRequest(req1).executeQueue("正在上传数据请稍候。。。", new LKHttpRequestQueueDone() {
+		new LKHttpRequestQueue().addHttpRequest(req1).executeQueue("正在交易请稍候。。。", new LKHttpRequestQueueDone() {
 			@Override
 			public void onComplete() {
 				super.onComplete();
@@ -285,7 +277,11 @@ public class CaptureActivity extends Activity implements Callback {
 		return new LKAsyncHttpResponseHandler() {
 			@Override
 			public void successAction(Object obj) {
-
+				HashMap<String, String> resultMap = (HashMap<String, String>) obj;
+				
+				Intent resultIntent = new Intent(CaptureActivity.this, SuccessActivity.class);
+				resultIntent.putExtra("result", resultMap);
+				startActivity(resultIntent);
 			}
 		};
 
