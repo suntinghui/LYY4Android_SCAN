@@ -42,31 +42,26 @@ public class ApplicationEnvironment {
 
 	public DisplayMetrics getPixels() {
 		DisplayMetrics dm = new DisplayMetrics();
-		((WindowManager) getApplication().getSystemService(
-				Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
+		((WindowManager) getApplication().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
 		return dm;
 	}
 
 	public SharedPreferences getPreferences() {
 		if (null == preferences)
-			preferences = this.getApplication().getSharedPreferences(
-					ApplicationEnvironment.POS_PEOPLE, Context.MODE_PRIVATE);
+			preferences = this.getApplication().getSharedPreferences(ApplicationEnvironment.POS_PEOPLE, Context.MODE_PRIVATE);
 
 		return preferences;
 	}
 
 	public SharedPreferences getPreferences(Context context) {
 		if (null == preferences)
-			preferences = context.getSharedPreferences(
-					ApplicationEnvironment.POS_PEOPLE, Context.MODE_PRIVATE);
+			preferences = context.getSharedPreferences(ApplicationEnvironment.POS_PEOPLE, Context.MODE_PRIVATE);
 
 		return preferences;
 	}
 
 	public boolean checkNetworkAvailable() {
-		ConnectivityManager manager = (ConnectivityManager) this
-				.getApplication()
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager manager = (ConnectivityManager) this.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (manager == null)
 			return false;
 
@@ -100,8 +95,7 @@ public class ApplicationEnvironment {
 	}
 
 	public boolean checkNetworkAvailable(Context context) {
-		ConnectivityManager manager = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (manager == null)
 			return false;
 
@@ -114,6 +108,5 @@ public class ApplicationEnvironment {
 		}
 		return false;
 	}
-	
-	
+
 }
