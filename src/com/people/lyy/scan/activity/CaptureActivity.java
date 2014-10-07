@@ -279,9 +279,31 @@ public class CaptureActivity extends BaseActivity implements Callback {
 			public void successAction(Object obj) {
 				HashMap<String, String> resultMap = (HashMap<String, String>) obj;
 				
-				Intent resultIntent = new Intent(CaptureActivity.this, SuccessActivity.class);
-				resultIntent.putExtra("result", resultMap);
-				startActivity(resultIntent);
+				String ret = resultMap.get("ret");
+				int r = Integer.parseInt(ret);
+				if (r == 0) {
+					Intent resultIntent = new Intent(CaptureActivity.this, SuccessActivity.class);
+					resultIntent.putExtra("result", resultMap);
+					startActivity(resultIntent);					
+				} else {
+					String msg = "未知异常";
+					if (r == 10) {
+						msg = "用户不存在";
+					} else if (r == 11){
+						msg = "二维码超时";
+					} else if (r == 12) {
+						msg = "余额不足";
+					} else if (r == 1) {
+						msg = "参数错误";
+					}
+					
+					Intent resultIntent = new Intent(CaptureActivity.this, DefeatedActivity.class);
+					resultIntent.putExtra("result", msg);
+					startActivity(resultIntent);
+				}
+				
+				
+				
 			}
 		};
 

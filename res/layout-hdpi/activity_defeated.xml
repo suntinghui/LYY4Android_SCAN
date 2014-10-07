@@ -32,6 +32,7 @@
         android:background="@drawable/defeated" />
 
     <TextView
+        android:id="@+id/msgText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dip"
