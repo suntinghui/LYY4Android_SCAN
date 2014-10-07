@@ -1,4 +1,5 @@
 package com.people.lyy.scan.activity;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,7 @@ import com.people.network.LKHttpRequestQueueDone;
 
 /**
  * Initial the camera
+ * 
  * @author Ryan.Tang
  */
 public class CaptureActivity extends Activity implements Callback {
@@ -54,9 +56,9 @@ public class CaptureActivity extends Activity implements Callback {
 	private boolean playBeep;
 	private static final float BEEP_VOLUME = 0.10f;
 	private boolean vibrate;
-	private Button btn_light_control,btn_back;
-	private boolean isShow=false;
-	
+	private Button btn_light_control, btn_back;
+	private boolean isShow = false;
+
 	private ProgressBar pg;
 	private ImageView iv_pg_bg_grey;
 	private String resultString;
@@ -66,7 +68,7 @@ public class CaptureActivity extends Activity implements Callback {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_diy);
-		//ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
+		// ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
 		CameraManager.init(getApplication());
 		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 		btn_light_control = (Button) this.findViewById(R.id.btn_light_control);
@@ -98,28 +100,26 @@ public class CaptureActivity extends Activity implements Callback {
 		initBeepSound();
 		vibrate = true;
 		btn_back.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				CaptureActivity.this.finish();
 			}
 		});
 		btn_light_control.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				LightControl mLightControl = new LightControl();
-				
-				if(isShow){
+
+				if (isShow) {
 					isShow = false;
 					btn_light_control.setBackgroundResource(R.drawable.torch_off);
-					Toast.makeText(getApplicationContext(), "����ƹر�", 0).show();
 					mLightControl.turnOff();
-				}else{
+				} else {
 					isShow = true;
 					btn_light_control.setBackgroundResource(R.drawable.torch_on);
 					mLightControl.turnOn();
-					Toast.makeText(getApplicationContext(), "����ƿ���", 0).show();
 				}
 			}
 		});
@@ -140,9 +140,10 @@ public class CaptureActivity extends Activity implements Callback {
 		inactivityTimer.shutdown();
 		super.onDestroy();
 	}
-	
+
 	/**
 	 * Handler scan result
+	 * 
 	 * @param result
 	 * @param barcode
 	 */
@@ -152,26 +153,26 @@ public class CaptureActivity extends Activity implements Callback {
 		resultString = result.getText();
 		if (resultString.equals("")) {
 			Toast.makeText(CaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
-		}else {
-			if(pg!=null&&pg.isShown()){
+		} else {
+			if (pg != null && pg.isShown()) {
 				pg.setVisibility(View.GONE);
 				iv_pg_bg_grey.setVisibility(View.VISIBLE);
 			}
-			
-			//把二维码信息上传服务器
+
+			// 把二维码信息上传服务器
 			upLoading();
-			
-			//这是在把二维码扫到的值传递 不过被我改了
-			Intent resultIntent = new Intent(CaptureActivity.this,SuccessActivity.class);
+
+			// 这是在把二维码扫到的值传递 不过被我改了
+			Intent resultIntent = new Intent(CaptureActivity.this, SuccessActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("result", resultString);
 			resultIntent.putExtras(bundle);
 			startActivity(resultIntent);
-//			this.setResult(RESULT_OK, resultIntent);
+			// this.setResult(RESULT_OK, resultIntent);
 		}
 		CaptureActivity.this.finish();
 	}
-	
+
 	private void initCamera(SurfaceHolder surfaceHolder) {
 		try {
 			CameraManager.get().openDriver(surfaceHolder);
@@ -181,14 +182,12 @@ public class CaptureActivity extends Activity implements Callback {
 			return;
 		}
 		if (handler == null) {
-			handler = new CaptureActivityHandler(this, decodeFormats,
-					characterSet);
+			handler = new CaptureActivityHandler(this, decodeFormats, characterSet);
 		}
 	}
 
 	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
 	}
 
@@ -230,11 +229,9 @@ public class CaptureActivity extends Activity implements Callback {
 			mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			mediaPlayer.setOnCompletionListener(beepListener);
 
-			AssetFileDescriptor file = getResources().openRawResourceFd(
-					R.raw.beep);
+			AssetFileDescriptor file = getResources().openRawResourceFd(R.raw.beep);
 			try {
-				mediaPlayer.setDataSource(file.getFileDescriptor(),
-						file.getStartOffset(), file.getLength());
+				mediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(), file.getLength());
 				file.close();
 				mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
 				mediaPlayer.prepare();
@@ -264,25 +261,25 @@ public class CaptureActivity extends Activity implements Callback {
 			mediaPlayer.seekTo(0);
 		}
 	};
-	
-	private void upLoading(){
-		HashMap<String,Object> tempMap = new HashMap<String,Object>();
-		tempMap.put("token",resultString);
+
+	private void upLoading() {
+		HashMap<String, Object> tempMap = new HashMap<String, Object>();
+		tempMap.put("token", resultString);
+		tempMap.put("money", this.getIntent().getStringExtra("money"));
 
 		LKHttpRequest req1 = new LKHttpRequest(TransferRequestTag.Accounts, tempMap, upLoadingHandler());
-			
-		new LKHttpRequestQueue().addHttpRequest(req1).executeQueue(
-				"正在上传数据请稍候。。。", new LKHttpRequestQueueDone() {
-					@Override
-					public void onComplete() {
-						super.onComplete();
 
-					}
+		new LKHttpRequestQueue().addHttpRequest(req1).executeQueue("正在上传数据请稍候。。。", new LKHttpRequestQueueDone() {
+			@Override
+			public void onComplete() {
+				super.onComplete();
 
-				});
-		
+			}
+
+		});
+
 	}
-	
+
 	public LKAsyncHttpResponseHandler upLoadingHandler() {
 
 		return new LKAsyncHttpResponseHandler() {

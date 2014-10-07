@@ -57,7 +57,4 @@ public class Constants {
 
 	public static final String TCKPreferences = "TCKPreferences";
 
-	public static String APPTOKEN = "";
-	public static String COST = "0";
-
 }
