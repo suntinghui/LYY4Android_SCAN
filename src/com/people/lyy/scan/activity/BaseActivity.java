@@ -147,6 +147,7 @@ public class BaseActivity extends Activity {
 			// 这里应该关闭其它提示型的对话框
 			this.hideDialog(ALL_DIALOG);
 
+			
 			this.createProgressDialog();
 
 			progressDialog.setMessage(null == message ? "" : message);
