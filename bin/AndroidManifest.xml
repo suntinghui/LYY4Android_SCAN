@@ -7,11 +7,39 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WIRTE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Light.NoTitleBar" >
+        <activity
+            android:name="com.people.lyy.scan.activity.SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.people.lyy.scan.activity.LoginActivity" >
+        </activity>
+        <activity android:name="com.people.lyy.scan.activity.BarCodeActivity" >
+        </activity>
+        <activity android:name="com.people.lyy.scan.activity.CaptureActivity" >
+        </activity>
+        <activity android:name="com.people.lyy.scan.activity.PhotoUploadActivity" >
+        </activity>
+                <activity android:name="com.people.lyy.scan.activity.SuccessActivity" >
+        </activity>
     </application>
 
 </manifest>
