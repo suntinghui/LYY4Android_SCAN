@@ -153,20 +153,19 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f080005;
-        public static final int app_name=0x7f080004;
+        public static final int app_name=0x7f080000;
         public static final int desc=0x7f080006;
         public static final int login=0x7f080009;
         public static final int next=0x7f08000a;
-        public static final int noNetTips=0x7f080003;
-        public static final int over=0x7f08000f;
+        public static final int noNetTips=0x7f080004;
         public static final int scan=0x7f08000c;
         public static final int scaner=0x7f08000b;
         public static final int scanover=0x7f08000e;
         public static final int scansuccess=0x7f08000d;
         public static final int search=0x7f080008;
-        public static final int str_login=0x7f080000;
-        public static final int str_pwd_hint=0x7f080002;
-        public static final int str_user_hint=0x7f080001;
+        public static final int str_login=0x7f080001;
+        public static final int str_pwd_hint=0x7f080003;
+        public static final int str_user_hint=0x7f080002;
         public static final int welcome=0x7f080007;
     }
     public static final class style {

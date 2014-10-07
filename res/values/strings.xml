@@ -1,10 +1,11 @@
-<resources>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
+<resources>
+    <string name="app_name">扫码枪</string>
     <string name="str_login">登    录</string>
     <string name="str_user_hint">请输入账号</string>
     <string name="str_pwd_hint">请输入密码</string>
     <string name="noNetTips">请您确认已开通手机上网功能，并在手机上设置正确的上网方式</string>
-    <string name="app_name">电子菜单</string>
     <string name="action_settings">设置</string>
     <string name="desc">描述</string>
     <string name="welcome">欢迎使用电子菜单软件</string>
@@ -15,6 +16,4 @@
     <string name="scan">扫描</string>
     <string name="scansuccess">消费成功</string>
     <string name="scanover">扫描结果</string>
-    <string name="over">完成</string>
-
 </resources>

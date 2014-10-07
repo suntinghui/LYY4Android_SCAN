@@ -97,5 +97,5 @@
         android:layout_marginRight="45dip"
         android:layout_marginTop="100dip"
         android:background="@drawable/btn"
-        android:text="@string/over" />
+        android:text="完成" />
 </LinearLayout>
