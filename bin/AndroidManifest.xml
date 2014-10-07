@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WIRTE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -35,7 +35,7 @@
         <activity android:name="com.people.lyy.scan.activity.CaptureActivity" />
         <activity android:name="com.people.lyy.scan.activity.PhotoUploadActivity" />
         <activity android:name="com.people.lyy.scan.activity.SuccessActivity" />
-
+        <activity android:name="com.people.lyy.scan.activity.DefeatedActivity" />
     </application>
 
 </manifest>
