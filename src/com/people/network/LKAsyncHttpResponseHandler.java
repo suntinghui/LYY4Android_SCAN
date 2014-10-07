@@ -12,17 +12,18 @@ import com.people.lyy.scan.client.TransferRequestTag;
 import com.people.lyy.scan.view.LKAlertDialog;
 
 public abstract class LKAsyncHttpResponseHandler extends AsyncHttpResponseHandler {
-	
+
 	private LKHttpRequest request;
 	
 	public void setRequest(LKHttpRequest request){
 		this.request = request;
+		
 	}
 	
 	public abstract void successAction(Object obj);
 	
 	public void failureAction(Throwable error, String content){
-		
+
 	}
 
 	@Override
@@ -57,7 +58,6 @@ public abstract class LKAsyncHttpResponseHandler extends AsyncHttpResponseHandle
 	@Override
 	public void onFailure(final Throwable error, final String content) {
 		super.onFailure(error, content);
-		
 		try{
 			HttpResponseException exception = (HttpResponseException) error;
 			Log.e("Status Code","" + exception.getStatusCode());

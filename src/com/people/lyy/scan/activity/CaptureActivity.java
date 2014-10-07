@@ -1,5 +1,7 @@
 package com.people.lyy.scan.activity;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -25,11 +27,16 @@ import android.widget.Toast;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.people.lyy.scan.R;
+import com.people.lyy.scan.client.TransferRequestTag;
 import com.people.lyy.scan.zxing.CameraManager;
 import com.people.lyy.scan.zxing.CaptureActivityHandler;
 import com.people.lyy.scan.zxing.InactivityTimer;
 import com.people.lyy.scan.zxing.LightControl;
 import com.people.lyy.scan.zxing.ViewfinderView;
+import com.people.network.LKAsyncHttpResponseHandler;
+import com.people.network.LKHttpRequest;
+import com.people.network.LKHttpRequestQueue;
+import com.people.network.LKHttpRequestQueueDone;
 
 /**
  * Initial the camera
@@ -52,7 +59,7 @@ public class CaptureActivity extends Activity implements Callback {
 	
 	private ProgressBar pg;
 	private ImageView iv_pg_bg_grey;
-	
+	private String resultString;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -142,8 +149,7 @@ public class CaptureActivity extends Activity implements Callback {
 	public void handleDecode(Result result, Bitmap barcode) {
 		inactivityTimer.onActivity();
 		playBeepSoundAndVibrate();
-		String resultString = result.getText();
-		//FIXME
+		resultString = result.getText();
 		if (resultString.equals("")) {
 			Toast.makeText(CaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
 		}else {
@@ -151,12 +157,16 @@ public class CaptureActivity extends Activity implements Callback {
 				pg.setVisibility(View.GONE);
 				iv_pg_bg_grey.setVisibility(View.VISIBLE);
 			}
+			
+			//把二维码信息上传服务器
+			upLoading();
+			
 			//这是在把二维码扫到的值传递 不过被我改了
-			Intent resultIntent = new Intent(CaptureActivity.this,SuccessActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("result", resultString);
-			resultIntent.putExtras(bundle);
-			startActivity(resultIntent);
+//			Intent resultIntent = new Intent(CaptureActivity.this,SuccessActivity.class);
+//			Bundle bundle = new Bundle();
+//			bundle.putString("result", resultString);
+//			resultIntent.putExtras(bundle);
+//			startActivity(resultIntent);
 //			this.setResult(RESULT_OK, resultIntent);
 		}
 		CaptureActivity.this.finish();
@@ -254,5 +264,33 @@ public class CaptureActivity extends Activity implements Callback {
 			mediaPlayer.seekTo(0);
 		}
 	};
+	
+	private void upLoading(){
+		HashMap<String,Object> tempMap = new HashMap<String,Object>();
+		tempMap.put("token",resultString);
 
+		LKHttpRequest req1 = new LKHttpRequest(TransferRequestTag.Accounts, tempMap, upLoadingHandler());
+			
+		new LKHttpRequestQueue().addHttpRequest(req1).executeQueue(
+				"正在上传数据请稍候。。。", new LKHttpRequestQueueDone() {
+					@Override
+					public void onComplete() {
+						super.onComplete();
+
+					}
+
+				});
+		
+	}
+	
+	public LKAsyncHttpResponseHandler upLoadingHandler() {
+
+		return new LKAsyncHttpResponseHandler() {
+			@Override
+			public void successAction(Object obj) {
+
+			}
+		};
+
+	}
 }
