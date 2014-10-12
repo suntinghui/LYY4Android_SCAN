@@ -354,6 +354,8 @@ public class CaptureActivity extends BaseActivity implements Callback, LoyaltyCa
 				if (isUploading)
 					return;
 				
+				playBeepSoundAndVibrate();
+				
 				resultString = text;
 				
 				// 把二维码信息上传服务器
