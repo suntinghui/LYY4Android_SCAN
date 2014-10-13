@@ -68,7 +68,8 @@ public class CaptureActivity extends BaseActivity implements Callback {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_diy);
-		// ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
+		// ViewUtil.addTopView(getApplicationContext(), this,
+		// R.string.scan_card);
 		CameraManager.init(getApplication());
 		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 		btn_light_control = (Button) this.findViewById(R.id.btn_light_control);
@@ -114,11 +115,13 @@ public class CaptureActivity extends BaseActivity implements Callback {
 
 				if (isShow) {
 					isShow = false;
-					btn_light_control.setBackgroundResource(R.drawable.torch_off);
+					btn_light_control
+							.setBackgroundResource(R.drawable.torch_off);
 					mLightControl.turnOff();
 				} else {
 					isShow = true;
-					btn_light_control.setBackgroundResource(R.drawable.torch_on);
+					btn_light_control
+							.setBackgroundResource(R.drawable.torch_on);
 					mLightControl.turnOn();
 				}
 			}
@@ -126,7 +129,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
 	}
 
 	@Override
-	protected void onPause() { 
+	protected void onPause() {
 		super.onPause();
 		if (handler != null) {
 			handler.quitSynchronously();
@@ -152,7 +155,8 @@ public class CaptureActivity extends BaseActivity implements Callback {
 		playBeepSoundAndVibrate();
 		resultString = result.getText();
 		if (resultString.equals("")) {
-			Toast.makeText(CaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(CaptureActivity.this, "Scan failed!",
+					Toast.LENGTH_SHORT).show();
 		} else {
 			if (pg != null && pg.isShown()) {
 				pg.setVisibility(View.GONE);
@@ -174,12 +178,14 @@ public class CaptureActivity extends BaseActivity implements Callback {
 			return;
 		}
 		if (handler == null) {
-			handler = new CaptureActivityHandler(this, decodeFormats, characterSet);
+			handler = new CaptureActivityHandler(this, decodeFormats,
+					characterSet);
 		}
 	}
 
 	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
 
 	}
 
@@ -221,9 +227,11 @@ public class CaptureActivity extends BaseActivity implements Callback {
 			mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			mediaPlayer.setOnCompletionListener(beepListener);
 
-			AssetFileDescriptor file = getResources().openRawResourceFd(R.raw.beep);
+			AssetFileDescriptor file = getResources().openRawResourceFd(
+					R.raw.beep);
 			try {
-				mediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(), file.getLength());
+				mediaPlayer.setDataSource(file.getFileDescriptor(),
+						file.getStartOffset(), file.getLength());
 				file.close();
 				mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
 				mediaPlayer.prepare();
@@ -259,16 +267,18 @@ public class CaptureActivity extends BaseActivity implements Callback {
 		tempMap.put("token", resultString);
 		tempMap.put("money", this.getIntent().getStringExtra("money"));
 
-		LKHttpRequest req1 = new LKHttpRequest(TransferRequestTag.Consumer, tempMap, upLoadingHandler());
+		LKHttpRequest req1 = new LKHttpRequest(TransferRequestTag.Consumer,
+				tempMap, upLoadingHandler());
 
-		new LKHttpRequestQueue().addHttpRequest(req1).executeQueue("正在交易请稍候。。。", new LKHttpRequestQueueDone() {
-			@Override
-			public void onComplete() {
-				super.onComplete();
+		new LKHttpRequestQueue().addHttpRequest(req1).executeQueue(
+				"正在交易请稍候。。。", new LKHttpRequestQueueDone() {
+					@Override
+					public void onComplete() {
+						super.onComplete();
 
-			}
+					}
 
-		});
+				});
 
 	}
 
@@ -278,32 +288,36 @@ public class CaptureActivity extends BaseActivity implements Callback {
 			@Override
 			public void successAction(Object obj) {
 				HashMap<String, String> resultMap = (HashMap<String, String>) obj;
-				
+
 				String ret = resultMap.get("ret");
 				int r = Integer.parseInt(ret);
 				if (r == 0) {
-					Intent resultIntent = new Intent(CaptureActivity.this, SuccessActivity.class);
+					Intent resultIntent = new Intent(CaptureActivity.this,
+							SuccessActivity.class);
 					resultIntent.putExtra("result", resultMap);
-					startActivity(resultIntent);					
+					startActivity(resultIntent);
 				} else {
 					String msg = "未知异常";
 					if (r == 10) {
 						msg = "用户不存在";
-					} else if (r == 11){
+					} else if (r == 11) {
 						msg = "二维码超时";
 					} else if (r == 12) {
 						msg = "余额不足";
 					} else if (r == 1) {
 						msg = "参数错误";
+					} else if (r == 15) {
+						msg = "该码已经扫描过了";
+					} else if (r == 13) {
+						msg = "验证出错";
 					}
-					
-					Intent resultIntent = new Intent(CaptureActivity.this, DefeatedActivity.class);
+
+					Intent resultIntent = new Intent(CaptureActivity.this,
+							DefeatedActivity.class);
 					resultIntent.putExtra("result", msg);
 					startActivity(resultIntent);
 				}
-				
-				
-				
+
 			}
 		};
 

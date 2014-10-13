@@ -38,6 +38,8 @@
         </activity>
         <activity android:name="com.people.lyy.scan.activity.DefeatedActivity" >
         </activity>
+        <activity android:name="com.people.lyy.scan.activity.ConfirmOrderActivity" >
+        </activity>
     </application>
 
 </manifest>
