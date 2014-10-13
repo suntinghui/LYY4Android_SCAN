@@ -32,14 +32,16 @@ public class SuccessActivity extends BaseActivity {
 	}
 
 	public void setView() {
-		HashMap<String, String> map = (HashMap<String, String>) this.getIntent().getSerializableExtra("result");
+		HashMap<String, String> map = (HashMap<String, String>) this
+				.getIntent().getSerializableExtra("result");
 		tv_cardcode.setText(map.get("card"));
 		tv_balance.setText(map.get("money"));
-		
+
 		btn_over.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				setResult(RESULT_OK);
 				finish();
 
 			}
@@ -50,12 +52,13 @@ public class SuccessActivity extends BaseActivity {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-			if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+			if (event.getAction() == KeyEvent.ACTION_DOWN
+					&& event.getRepeatCount() == 0) {
 				finish();
 			}
 			return true;
 		}
 		return false;
 	}
-	
+
 }

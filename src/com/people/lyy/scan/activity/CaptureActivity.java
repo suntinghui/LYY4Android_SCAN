@@ -2,19 +2,19 @@ package com.people.lyy.scan.activity;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Vector;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.people.lyy.scan.R;
+import com.people.lyy.scan.client.LoyaltyCardReader;
 import com.people.lyy.scan.client.TransferRequestTag;
 import com.people.lyy.scan.zxing.CameraManager;
 import com.people.lyy.scan.zxing.CaptureActivityHandler;
@@ -44,7 +45,13 @@ import com.people.network.LKHttpRequestQueueDone;
  * 
  * @author Ryan.Tang
  */
-public class CaptureActivity extends BaseActivity implements Callback {
+public class CaptureActivity extends BaseActivity implements Callback,
+		LoyaltyCardReader.AccountCallback {
+
+	private static final String TAG = "NFCAndTranActivity";
+
+	private static int READER_FLAGS = NfcAdapter.FLAG_READER_NFC_A
+			| NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK;
 
 	private CaptureActivityHandler handler;
 	private ViewfinderView viewfinderView;
@@ -62,6 +69,9 @@ public class CaptureActivity extends BaseActivity implements Callback {
 	private ProgressBar pg;
 	private ImageView iv_pg_bg_grey;
 	private String resultString;
+	public LoyaltyCardReader mLoyaltyCardReader;
+
+	private boolean isUploading = false;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -76,12 +86,20 @@ public class CaptureActivity extends BaseActivity implements Callback {
 		btn_back = (Button) this.findViewById(R.id.btn_back);
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
+
+		mLoyaltyCardReader = new LoyaltyCardReader(this);
+		// Disable Android Beam and register our card reader callback
+
+		enableReaderMode();
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		enableReaderMode();
+
 		SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
 		SurfaceHolder surfaceHolder = surfaceView.getHolder();
 		if (hasSurface) {
@@ -131,6 +149,9 @@ public class CaptureActivity extends BaseActivity implements Callback {
 	@Override
 	protected void onPause() {
 		super.onPause();
+
+		disableReaderMode();
+
 		if (handler != null) {
 			handler.quitSynchronously();
 			handler = null;
@@ -165,7 +186,6 @@ public class CaptureActivity extends BaseActivity implements Callback {
 
 			// 把二维码信息上传服务器
 			upLoading();
-
 		}
 	}
 
@@ -263,6 +283,8 @@ public class CaptureActivity extends BaseActivity implements Callback {
 	};
 
 	private void upLoading() {
+		isUploading = true;
+
 		HashMap<String, Object> tempMap = new HashMap<String, Object>();
 		tempMap.put("token", resultString);
 		tempMap.put("money", this.getIntent().getStringExtra("money"));
@@ -276,10 +298,9 @@ public class CaptureActivity extends BaseActivity implements Callback {
 					public void onComplete() {
 						super.onComplete();
 
+						isUploading = false;
 					}
-
 				});
-
 	}
 
 	public LKAsyncHttpResponseHandler upLoadingHandler() {
@@ -295,7 +316,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
 					Intent resultIntent = new Intent(CaptureActivity.this,
 							SuccessActivity.class);
 					resultIntent.putExtra("result", resultMap);
-					startActivity(resultIntent);
+					startActivityForResult(resultIntent, 100);
 				} else {
 					String msg = "未知异常";
 					if (r == 10) {
@@ -315,11 +336,57 @@ public class CaptureActivity extends BaseActivity implements Callback {
 					Intent resultIntent = new Intent(CaptureActivity.this,
 							DefeatedActivity.class);
 					resultIntent.putExtra("result", msg);
-					startActivity(resultIntent);
+					startActivityForResult(resultIntent, 101);
 				}
 
 			}
 		};
 
 	}
+
+	private void enableReaderMode() {
+		Log.i(TAG, "Enabling reader mode");
+		NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
+		if (nfc != null) {
+			nfc.enableReaderMode(this, mLoyaltyCardReader, READER_FLAGS, null);
+		}
+	}
+
+	private void disableReaderMode() {
+		Log.i(TAG, "Disabling reader mode");
+		NfcAdapter nfc = NfcAdapter.getDefaultAdapter(this);
+		if (nfc != null) {
+			nfc.disableReaderMode(this);
+		}
+	}
+
+	@Override
+	public void onAccountReceived(final String text) {
+		// This callback is run on a background thread, but updates to UI
+		// elements must be performed
+		// on the UI thread.
+		this.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (isUploading)
+					return;
+
+				playBeepSoundAndVibrate();
+
+				resultString = text;
+
+				// 把二维码信息上传服务器
+				upLoading();
+			}
+		});
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK) {
+			CaptureActivity.this.finish();
+		}
+	}
+
 }

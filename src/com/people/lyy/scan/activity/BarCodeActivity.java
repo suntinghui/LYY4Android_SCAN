@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class BarCodeActivity extends BaseActivity {
 	private View btn_scan;
@@ -43,6 +44,11 @@ public class BarCodeActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				if (et_money.getText().toString().equals("")){
+					Toast.makeText(BarCodeActivity.this, "请输入金额！", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
 				Intent intent = new Intent(BarCodeActivity.this, CaptureActivity.class);
 				intent.putExtra("money", et_money.getText().toString().trim());
 				startActivity(intent);

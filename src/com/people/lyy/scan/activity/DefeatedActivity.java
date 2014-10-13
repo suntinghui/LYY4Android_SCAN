@@ -34,6 +34,7 @@ public class DefeatedActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				setResult(RESULT_OK);
 				finish();
 			}
 		});
@@ -43,7 +44,8 @@ public class DefeatedActivity extends BaseActivity {
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-			if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+			if (event.getAction() == KeyEvent.ACTION_DOWN
+					&& event.getRepeatCount() == 0) {
 				finish();
 			}
 			return true;
